@@ -45,7 +45,7 @@ $inputSitesCSV = "./SiteCollectionsList.txt"
 $enableVersioning = $true
 
 # Version type (Major, MajorMinor)
-$versionType = "Major"
+$versionType = "MajorMinor"
 
 # Major version limit
 $majorVersionLimit = 10

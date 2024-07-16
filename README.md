@@ -1,6 +1,12 @@
 # SharePoint Versioning Scripts
 
-These scripts have been created to allow you to report on the configuration of SharePoint versioning across a tenant and in addition, enable/disable versioning on all document libraries. All scripts connect to the Microsoft Graph API and SharePoint Online using the PnP PowerShell module to retrieve site/document library information and update versioning settings. 
+These scripts have been created to allow you to report on the configuration of SharePoint versioning across document libraries in a tenant and in addition, enable/disable versioning on all libraries. All scripts connect to the Microsoft Graph API and SharePoint Online using the PnP PowerShell module to retrieve site/document library information and update versioning settings. 
+
+They are primarily designed for organizations with a large number of SharePoint sites and document libraries where the versioning status is unknown/inconsistent.
+
+You can use GetLibraryVersioningInfo.ps1 script to first report on versioning settings and then leverage EnableDisableVersioning.ps1 script to configure as per your requirements.
+
+It is worth noting that new SharePoint sites now have versioning turned ON by default with no native ability to disable it. 
 
 There are two scripts in this repo:
 
@@ -94,13 +100,13 @@ A sample csv showing the output of the scripts can be seen below. The EnableDisa
 
 ### GetLibraryVersioningInfo.ps1
 
-| Type    | LogTime            | SiteUrl                   | LibraryTitle     | VersioningEnabled | VersionType |
-|---------|--------------------|---------------------------|------------------|-------------------|-------------|
-| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site1 | Documents     | TRUE              | Major       |
-| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site2 | Project Documents    | FALSE             | MinorMajor        |
-| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site3 | Financial Reports| TRUE              | Minor       |
-| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site4 | Policies         | TRUE              | MinorMajor  |
-| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site5 | Meeting Slides   | FALSE             | Major        |
+| Type    | LogTime            | SiteUrl                   | LibraryTitle     | VersioningEnabled | VersionType | MajorVersionLimit | MinorVersionLimit |
+|---------|--------------------|---------------------------|------------------|-------------------|-------------| -------------| -------------|
+| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site1 | Documents     | TRUE              | Major       | 500 | 
+| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site2 | Project Documents    | FALSE        | MinorMajor        | 500 | 20
+| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site3 | Financial Reports| TRUE              | Major       | 500 | 
+| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site4 | Policies         | TRUE              | MinorMajor  | 500 | 100
+| Success | 12/07/2024  12:57:15| https://contoso.sharepoint.com/site5 | Meeting Slides   | FALSE             | Major        | 500 |
 
 ## Running the scripts
 

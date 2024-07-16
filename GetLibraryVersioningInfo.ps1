@@ -130,7 +130,16 @@ function Get-DocumentLibraries($site) {
 
             $versioningStatus = Get-VersioningStatus -library $library
 
-            Write-LogEntry -siteUrl $site.WebUrl -libraryTitle $library.Title -versioningEnabled $versioningStatus[0] -versionType $versioningStatus[1] -type "Success"
+            $majorVersionLimit = ""
+            $minorVersionLimit = ""
+            if ($versioningStatus[1] -eq "MajorMinor") {
+                $majorVersionLimit = $library.MajorVersionLimit
+                $minorVersionLimit = $library.MajorWithMinorVersionsLimit
+            }
+            else {
+                $majorVersionLimit = $library.MajorVersionLimit
+            }
+            Write-LogEntry -siteUrl $site.WebUrl -libraryTitle $library.Title -versioningEnabled $versioningStatus[0] -versionType $versioningStatus[1] -type "Success" -majorVersionLimit $majorVersionLimit -minorVersionLimit $minorVersionLimit
         }
     }
     catch {
@@ -159,7 +168,7 @@ function Get-VersioningStatus($library)
 
 }
 
-function Write-LogEntry($siteUrl, $libraryTitle, $versioningEnabled, $versionType, $type) {
+function Write-LogEntry($siteUrl, $libraryTitle, $versioningEnabled, $versionType, $type, $majorVersionLimit, $minorVersionLimit) {
     $logLine = New-Object -TypeName PSObject -Property @{
         Type         = $type
         LogTime      = Get-Date
@@ -167,9 +176,11 @@ function Write-LogEntry($siteUrl, $libraryTitle, $versioningEnabled, $versionTyp
         LibraryTitle = $libraryTitle
         VersioningEnabled = $versioningEnabled
         VersionType = $versionType
+        MajorVersionLimit = $majorVersionLimit
+        MinorVersionLimit = $minorVersionLimit 
     }
 
-    $orderedLogLine = $logLine | Select-Object -Property Type, LogTime, SiteUrl, LibraryTitle, VersioningEnabled, VersionType
+    $orderedLogLine = $logLine | Select-Object -Property Type, LogTime, SiteUrl, LibraryTitle, VersioningEnabled, VersionType, MajorVersionLimit, MinorVersionLimit
 
     if ($type -eq "Success") {
         $orderedLogLine | Export-Csv -Path $successLogFileLocation -NoTypeInformation -Append
