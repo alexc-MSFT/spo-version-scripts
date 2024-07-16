@@ -8,6 +8,8 @@ You can use GetLibraryVersioningInfo.ps1 script to first report on versioning se
 
 It is worth noting that new SharePoint sites now have versioning turned ON by default with no native ability to disable it. 
 
+Special thanks to [Alex Grover](https://github.com/grovale) for his awesome scripts which have been used as a base for these.
+
 There are two scripts in this repo:
 
 ## GetLibraryVersioningInfo.ps1
